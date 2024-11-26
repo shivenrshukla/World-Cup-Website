@@ -1,0 +1,114 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Player Stats</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    </head>
+<body>
+    <header>
+        <h1>Indian Cricket Team - World Cup 2023 Stats</h1>
+        <nav>
+          <nav> 
+            <a href="/">Home</a>
+            <a href="/player-stats">Player Stats</a>
+            <a href="/batsman-stats">Batsman Stats</a>
+            <a href="/bowler-stats">Bowler Stats</a>
+            <a href="/match-highlights">Match Highlights</a>
+            <a href="/coach">Coaches</a>
+          </nav>      
+        </nav>
+      </header>
+    <h2>Batsman Stats</h2>
+<div class="filters">
+  <a href="/batsman-stats?sort_by=runs">Sort by Runs</a> |
+  <a href="/batsman-stats?sort_by=average">Sort by Average</a> |
+  <a href="/batsman-stats?sort_by=strike_rate">Sort by Strike Rate</a>
+</div>
+
+    <main>
+        <table>
+            <tr>
+                <th>Jersey Number</th>
+                <th>Matches Played</th>
+                <th>Runs</th>
+                <th>Highest Score</th>
+                <th>Average</th>
+                <th>Strike Rate</th>
+            </tr>
+            {% for batsman in batsmen %}
+            <tr>
+                <td>{{ batsman.jersey_number }}</td>
+                <td>{{ batsman.matches_played }}</td>
+                <td>{{ batsman.runs }}</td>
+                <td>{{ batsman.highest_score }}</td>
+                <td>{{ batsman.average }}</td>
+                <td>{{ batsman.strike_rate }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </main>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Cricket Team - Batsman Stats</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Indian Cricket Team - World Cup 2023 Stats</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/player-stats">Player Stats</a>
+            <a href="/batsman-stats">Batsman Stats</a>
+            <a href="/bowler-stats">Bowler Stats</a>
+            <a href="/match-highlights">Match Highlights</a>
+            <a href="/coach">Coaches</a>
+        </nav>
+    </header>
+    
+    <h2>Batsman Stats</h2>
+    <div class="filters">
+        <a href="/batsman-stats?sort_by=runs">Sort by Runs</a> |
+        <a href="/batsman-stats?sort_by=average">Sort by Average</a> |
+        <a href="/batsman-stats?sort_by=strike_rate">Sort by Strike Rate</a>
+    </div>
+    
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th>Player Photo</th>
+                    <th>Player Name</th>
+                    <th>Jersey Number</th>
+                    <th>Matches Played</th>
+                    <th>Runs</th>
+                    <th>Highest Score</th>
+                    <th>Average</th>
+                    <th>Strike Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for batsman in batsmen %}
+                <tr>
+                    <td><img src="{{ url_for('static', filename='images/' ~ batsman.photo) }}" alt="{{ batsman.name }}'s photo" class="player-photo"></td>
+                    <td>{{ batsman.name }}</td>
+                    <td>{{ batsman.jersey_number }}</td>
+                    <td>{{ batsman.matches_played }}</td>
+                    <td>{{ batsman.runs }}</td>
+                    <td>{{ batsman.highest_score }}</td>
+                    <td>{{ batsman.average }}</td>
+                    <td>{{ batsman.strike_rate }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>
