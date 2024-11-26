@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bowler Stats</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Indian Cricket Team - World Cup 2023 Stats</h1>
+        <nav>
+          <nav> 
+            <a href="/">Home</a>
+            <a href="/player-stats">Player Stats</a>
+            <a href="/batsman-stats">Batsman Stats</a>
+            <a href="/bowler-stats">Bowler Stats</a>
+            <a href="/match-highlights">Match Highlights</a>
+            <a href="/coach">Coaches</a>
+          </nav>      
+        </nav>
+      </header>
+    <h2>Bowler Stats</h2>
+
+    <div class="filters">
+        <a href="/bowler-stats?sort_by=wickets">Sort by Wickets</a> |
+        <a href="/bowler-stats?sort_by=economy">Sort by Economy</a> |
+        <a href="/bowler-stats?sort_by=average">Sort by Average</a>
+    </div>
+
+    <main>
+        <table>
+            <tr>
+                <th>Player Photo</th>
+                <th>Player Name</th>
+                <th>Jersey Number</th>
+                <th>Matches Played</th>
+                <th>Wickets</th>
+                <th>Economy</th>
+                <th>Average</th>
+                <th>Strike Rate</th>
+            </tr>
+            {% for bowler in bowlers %}
+            <tr>
+                <td><img src="{{ url_for('static', filename='images/' ~ bowler.photo) }}" alt="{{ bowler.name }}'s photo" class="player-photo"></td>
+                <td>{{ bowler.name }}</td>
+                <td>{{ bowler.jersey_number }}</td>
+                <td>{{ bowler.matches_played }}</td>
+                <td>{{ bowler.wickets }}</td>
+                <td>{{ bowler.economy }}</td>
+                <td>{{ bowler.average }}</td>
+                <td>{{ bowler.strike_rate }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </main>
+</body>
+</html>
