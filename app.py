@@ -6,7 +6,7 @@ app = Flask(__name__)
 db_connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Shiven29@sql",  # Your MySQL password
+    password="SQL@DBMS",  # Your MySQL password
     database="ict_2023_cwc"
 )
 
@@ -138,6 +138,8 @@ def bowler_stats():
     # Validate the input
     if sort_by not in ['wickets', 'economy', 'average']:
         sort_by = 'wickets'
+    if sort_by in['economy','average']:
+        order='ASC'
     if order not in ['ASC', 'DESC']:
         order = 'DESC'
 
