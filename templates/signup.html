@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <style>
+        body {
+        background-color: #f4f4f4;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    h2 {
+        color: #E73493;
+        text-align: center;
+    }
+    </style>
+</head>
+<body>
+    <div>
+        <h2>Sign Up</h2>
+    
+    <!-- Sign-Up Form -->
+    <form method="POST" action="/signup" class="login-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <br><br>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br><br>
+        
+        <button class= "submitter" type="submit">Sign Up</button>
+    </form>
+    
+    <br>
+    <p class="signup">Already have an account? <a href="/login">Login here</a></p>
+    </div>
+</body>
+</html>
