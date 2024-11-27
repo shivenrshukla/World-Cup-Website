@@ -1,0 +1,886 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
+  line-height: 1.6;
+}
+
+/* Header Section */
+header {
+  background-color: #E73493; /* Deep Koamaru */
+  color: white;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header nav a {
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+header nav a:hover {
+  color: #E73493; /* Royal Pink */
+}
+
+/* Add background image to #home section */
+#home.hero {
+  background-image: url(http://127.0.0.1:5000/static/images/World%20Cup.jpg);
+  background-size: cover; /* Cover the entire section while maintaining aspect ratio */
+  background-position: center center;
+  background-repeat: no-repeat;
+  height: 400px; /* Set section height */
+  color: #E73493;
+  display: flex;
+  justify-content: flex-end; /* Center content horizontally */
+  /*align-items: flex-end; /* Align content to the bottom */
+  text-align: center; /* Center the text */
+  /*padding-bottom: 20px; /* Add space at the bottom */
+  flex-direction: column; /* Stack elements vertically */
+  /*gap: 10px; /* Space between h2 and p */
+}
+
+#home.hero::before {
+  content: ''; /* No text content, just the overlay */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4); /* Semi-transparent black (adjust alpha for more/less transparency) */
+  z-index: -1; /* Ensure the overlay stays below the text */
+}
+
+/* Adjust the text styling */
+#home.hero h2 {
+  color: gold; /* White text color */
+  font-size: 3em; /* Larger text for h2 */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Shadow for contrast */
+  margin: 0; /* Remove default margin */
+}
+
+#home.hero p {
+  color: #fff; /* White text color */
+  font-size: 1.2em; /* Adjust font size */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6); /* Shadow for contrast */
+  margin-top: 0; /* No top margin here as gap already handles it */
+}
+
+/* Media Query for Responsiveness */
+@media screen and (max-width: 768px) {
+  #home.hero h2 {
+    font-size: 2em; /* Adjust size for smaller screens */
+  }
+
+  #home.hero p {
+    font-size: 1em; /* Adjust size for smaller screens */
+  }
+}
+
+/* Main Section Styling */
+main {
+  padding: 20px;
+  margin: 0 auto;
+}
+
+main h2 {
+  font-size: 2rem;
+  color: #36256E; /* Matches the header color */
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Match Card Container */
+.match-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+  padding: 20px;
+}
+
+/* Match Card Styles for Coaches and Matches */
+.match-card {
+  display: flex; /* Arrange text and image side by side */
+  align-items: center; /* Vertically align content */
+  justify-content: space-between; /* Space between text and image */
+  margin: 20px 0;
+  border: 1px solid #ddd;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  gap: 20px; /* Space between text and image */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.match-card h3 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #36256E;
+}
+
+.match-card p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.match-card:hover {
+  transform: translateY(-5px);
+  background-color: #E73493;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.match-card:hover p {
+  color: #fff;
+}
+
+.match-card button {
+  background-color: #E73493;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.match-card button:hover {
+  background-color: #d62e80;
+}
+
+/* Image Styling */
+.card-image {
+  max-width: 150px; /* Adjust image size */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 8px; /* Optional: rounded corners */
+  object-fit: cover; /* Ensure proper image cropping if needed */
+}
+
+.matches-card {
+  background-color: #f4f4f4; /* Light background color */
+  border: 1px solid #ddd; /* Subtle border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.matches-card h3 {
+  margin-top: 0;
+  font-size: 1.5em;
+  color: #E73493; /* Highlighted text color */
+}
+
+.matches-card p {
+  margin: 10px 0;
+  line-height: 1.5;
+}
+
+.matches-card:hover {
+  transform: translateY(-10px); /* Lift on hover */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+  color: #fff;
+  background-color: #36256E;
+}
+
+.matches-card:hover h3{
+  color: #fff;
+}
+
+.spacer-row td {
+  border: none;
+  padding: 0;
+}
+
+.spacer-row hr {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 0;
+}
+
+/* Video Thumbnail Styling */
+td img {
+  width: 120px;
+  height: auto;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+td img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Hero Section */
+.hero {
+  background-image: url('cricket-background.jpg');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  text-align: center;
+  padding: 50px 20px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Quick Stats Section */
+.quick-stats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
+  background-color: #eeeeee;
+  gap: 20px;
+}
+
+.stat-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 20%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Player Stats Section */
+.player-stats {
+  padding: 40px 20px;
+}
+
+/* Search and Filter Section */
+.search-filter {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.search-filter input, .search-filter select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.player-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  justify-content: center;
+}
+
+.player-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  background-color: #f9f9f9;
+  transition: transform 0.2s;
+}
+
+.player-card img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.player-card h3 {
+  margin: 10px 0;
+  font-size: 18px;
+}
+
+.player-card p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.player-card:hover {
+  transform: scale(1.05);
+}
+
+/* Match Highlights Section */
+.match-highlights {
+  padding: 40px 20px;
+}
+
+/* Footer Section */
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 0.9rem;
+  border-top: 4px solid #36256E; /* Deep Koamaru */
+}
+
+header h1 {
+  margin-bottom: 10px;
+  font-size: 2rem;
+}
+
+/* Page Title */
+h2 {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 1.8rem;
+  color: #36256E; /* Deep Koamaru */
+}
+
+/* Filters Section */
+.filters {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 1.1rem;
+}
+
+.filters a {
+  color: #36256E; /* Deep Koamaru */
+  text-decoration: none;
+  margin: 0 10px;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.filters a:hover {
+  color: #E73493; /* Royal Pink */
+  text-decoration: underline;
+}
+
+/* Table Styles */
+main {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 1rem;
+}
+
+th, td {
+  text-align: center;
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #36256E; /* Deep Koamaru */
+  color: white;
+  font-weight: bold;
+}
+
+td {
+  background-color: #f9f9f9;
+}
+
+tr:nth-child(even) td {
+  background-color: #eeeeee;
+}
+
+tr:hover td {
+  background-color: #d4eaff; /* Light blue hover effect */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  header h1 {
+      font-size: 1.5rem;
+  }
+
+  header nav a {
+      display: block;
+      margin: 5px 0;
+  }
+
+  table {
+      font-size: 0.9rem;
+  }
+
+  .filters {
+      font-size: 1rem;
+  }
+}
+
+/* Table Row Height and Spacing */
+table tbody tr {
+  height: 150px; /* Increased row height */
+}
+
+table tbody img {
+  width: 120px; /* Thumbnail width */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Optional: A slight shadow for thumbnail */
+}
+
+/* Spacer Row with Horizontal Rule */
+.spacer-row td {
+  padding: 10px 0;
+  border: none;
+}
+
+.spacer-row hr {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 0 auto;
+  width: 100%; /* Adjust width of the horizontal rule */
+}
+
+#button{
+  padding: 10px;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: 900;
+  font-size: large;
+}
+
+/* Slider Wrapper */
+.slider {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Image Container */
+.slider-images {
+  display: flex;
+  width: 100%;
+  animation: slide 16s infinite ease-in-out;
+}
+
+/* Individual Image Item */
+.slider-item {
+  position: relative;
+  width: 100%; /* Full viewport width */
+  flex-shrink: 0;
+}
+
+/* Individual Images */
+.slider-item img {
+  width: 100%;
+  height: 750px; /* Adjust as needed */
+  object-fit: cover;
+}
+
+/* Captions */
+.caption {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Sliding Animation */
+@keyframes slide {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-100%); }
+  50% { transform: translateX(-200%); }
+  75% { transform: translateX(-300%); }
+  100% { transform: translateX(0); }
+}
+
+/* Dot Navigation */
+.dots {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  z-index: 10;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  margin: 0 5px;
+  background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0s linear;
+}
+
+.dot.active {
+  background-color: #E73493; /* Royal Pink */
+}
+
+.dot:hover {
+  background-color: rgba(255, 255, 255, 1); /* Brighter on hover */
+}
+
+/* Dot Animation */
+@keyframes dotAnimation {
+  0%, 25% {
+    background-color: #E73493; /* Active dot color */
+  }
+  25.01%, 100% {
+    background-color: rgba(255, 255, 255, 0.5); /* Inactive dot color */
+  }
+}
+
+/* Dot animation timing */
+.dot:nth-child(1) {
+  animation: dotAnimation 16s infinite;
+}
+
+.dot:nth-child(2) {
+  animation: dotAnimation 16s infinite;
+  animation-delay: 4s; /* Starts after first image's display time */
+}
+
+.dot:nth-child(3) {
+  animation: dotAnimation 16s infinite;
+  animation-delay: 8s; /* Starts after second image's display time */
+}
+
+.dot:nth-child(4) {
+  animation: dotAnimation 16s infinite;
+  animation-delay: 12s; /* Starts after third image's display time */
+}
+
+/* Caption Style */
+.caption {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem; /* Size the text appropriately */
+  color: white;
+  font-family: 'Arial', sans-serif; /* Choose an elegant, modern font */
+  font-weight: bold; /* Make the text bold */
+  text-align: center;
+  padding: 15px 30px; /* Add padding around the text */
+  background: linear-gradient(135deg, #E73493, #36256E); /* Gradient background */
+  border-radius: 10px; /* Round the corners */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Add a subtle shadow */
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Shadow for the text to make it pop */
+  transition: all 0.3s ease; /* Smooth transition for hover effect */
+  max-width: 80%; /* Limit the width of the caption */
+  white-space: nowrap; /* Prevent the text from breaking into multiple lines */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Truncate long captions with ellipsis */
+}
+
+.caption:hover {
+  transform: translateX(-50%) scale(1.05); /* Slightly increase size on hover */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6); /* Darker shadow on hover */
+  background: linear-gradient(135deg, #36256E, #E73493); /* Inverse gradient effect on hover */
+}
+
+/* Animating the Text */
+.caption {
+  animation: fadeIn 2s ease-in-out;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(50px); /* Start below the image */
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0); /* End at the normal position */
+  }
+}
+
+.player-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: #f9f9f9;
+  padding: 20px;
+  margin: 20px auto;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+}
+
+.player-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.player-card h2 {
+  margin-bottom: 10px;
+  color: #36256E; /* Deep Koamaru */
+}
+
+.player-card p {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Section Styling */
+.coach {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.coach h2 {
+  font-size: 2rem;
+  color: #36256E; /* Deep Koamaru */
+  margin-bottom: 20px;
+}
+
+/* Table Styling for Coaches */
+.coach table {
+  width: 80%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.coach th, .coach td {
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.coach th {
+  background-color: #36256E; /* Deep Koamaru */
+  color: #fff;
+  font-weight: bold;
+}
+
+.coach td {
+  background-color: #f9f9f9;
+}
+
+.coach tr:nth-child(even) td {
+  background-color: #eeeeee;
+}
+
+.coach tr:hover td {
+  background-color: #E73493; /* Royal Pink highlight on hover */
+  color: white;
+}
+
+/* Adjust Table Responsiveness */
+@media (max-width: 768px) {
+  .coach table {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+}
+
+/* Style the button */
+button#matches_played{
+  background-color: #E73493; /* Green background */
+  color: white; /* White text */
+  font-size: 16px; /* Font size */
+  padding: 10px 20px; /* Padding to make the button larger */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Change cursor on hover */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+}
+
+/* Change the background on hover */
+button#matches_played:hover{
+  background-color: #36256E; /* Darker green on hover */
+  transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+/* Style the link (a) to remove default underline */
+a {
+  text-decoration: none; /* Remove underline from the link */
+}
+
+/* Optionally, add focus styling for accessibility */
+button#matches_played:focus{
+  outline: 2px solid #ff9800; /* Orange outline when focused */
+  outline-offset: 4px;
+}
+
+/* Coaches Section */
+#coaches {
+  padding: 20px;
+}
+
+/* Footer Styling */
+footer {
+  text-align: center;
+  padding: 10px 0;
+  background-color: #36256E; /* Matches navigation styling */
+  color: #fff;
+  font-size: 0.9rem;
+  margin-top: 40px;
+}
+
+.login-form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.login-form label {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.login-form button.submitter {
+  width: 100%;
+  background-color: #E73493;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.login-form button.submitter:hover {
+  background-color: #c12679;
+}
+
+.login-form .error {
+  color: red;
+  font-size: 0.9em;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* .signup {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.signup a {
+  color: #E73493;
+  text-decoration: none;
+}
+
+.signup a:hover {
+  text-decoration: underline;
+}
+
+/* Signup Page Styling 
+.signup-form {
+  max-width: 450px;
+  margin: 40px auto;
+  padding: 25px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.signup-form h2 {
+  font-size: 2rem;
+  color: #36256E; 
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.signup-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.signup-form input[type="submit"] {
+  background-color: #E73493;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.signup-form input[type="submit"]:hover {
+  background-color: #d62e80;
+}
+
+.signup-form p {
+  text-align: center;
+}
+
+.signup-form p a {
+  color: #E73493;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.signup-form p a:hover {
+  text-decoration: underline;
+} */
+
+/* Add to your existing CSS */
+header {
+  position: relative;
+}
+
+.signout {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  background-color: #36256E;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.signout a {
+  font-size: 16px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.signout a:hover {
+  text-decoration: none;
+}
