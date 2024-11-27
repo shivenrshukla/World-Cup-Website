@@ -20,5 +20,14 @@ SELECT p.name, b.jersey_number, b.matches_played, b.wickets, b.economy, b.averag
 FROM bowler as b
 NATURAL JOIN player as p;
 
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+select * from users;
+
 select * from player;
 select * from coach;
