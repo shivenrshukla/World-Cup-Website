@@ -1,110 +1,59 @@
-from flask import Flask, render_template,request, jsonify
-import mysql.connector
+from flask import Flask, render_template, request, redirect, session
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'  # Secret key for session handling
+
+# Database connection (assuming you're using MySQL)
+import mysql.connector
 
 db_connection = mysql.connector.connect(
     host="localhost",
-    user="root",
-    password="SQL@DBMS",  # Your MySQL password
-    database="ict_2023_cwc"
+    user="root",  # Replace with your MySQL username
+    password="SQL@DBMS",  # Replace with your MySQL password
+    database="ICT_2023_CWC"  # Replace with your database name
 )
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    # Redirect to login if not logged in
+    if 'username' not in session:
+        return redirect('/login')  # Redirect to login page
+    return render_template('index.html', username=session['username'])
 
-@app.route('/player-stats', methods=['GET'])
-def player_stats():
-    # Get query parameters for sorting and searching
-    sort_by = request.args.get('sort_by', 'name')
-    order = request.args.get('order', 'asc')
-    search_query = request.args.get('search_query', '').strip()  # Get the search query from the request
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
 
-    # Validate inputs
-    valid_sort_fields = ['icc_ranking', 'career_matches', 'name']
-    valid_orders = ['asc', 'desc']
-
-    if sort_by not in valid_sort_fields:
-        sort_by = 'name'
-    if order.lower() not in valid_orders:
-        order = 'asc'
-
-    # Construct the query
-    query = f"SELECT * FROM player WHERE name LIKE %s ORDER BY {sort_by} {order.upper()}"
-    search_param = f"%{search_query}%"  # Use wildcard for partial match
-
-    # Execute the query
-    cursor = db_connection.cursor(dictionary=True)
-    try:
-        cursor.execute(query, (search_param,))
-        players = cursor.fetchall()
-
-        return render_template(
-            'players.html', 
-            players=players, 
-            sort_by=sort_by, 
-            order=order, 
-            search_query=search_query
-        )
-    except mysql.connector.Error as e:
-        return f"Database Error: {e}"
-    finally:
+        # Check username and password in the database
+        cursor = db_connection.cursor(dictionary=True)
+        query = "SELECT * FROM users WHERE username = %s AND password = %s"
+        cursor.execute(query, (username, password))
+        user = cursor.fetchone()
         cursor.close()
 
-@app.route('/player-suggestions', methods=['GET'])
-def player_suggestions():
-    query = request.args.get('q', '').strip()  # Get the search query from the request
-    if not query:
-        return jsonify({"suggestions": []})  # Return an empty list if the query is empty
+        if user:
+            # Login successful
+            session['user_id'] = user['id']
+            session['username'] = user['username']
+            session['role'] = user['role']
+            return redirect('/')  # Redirect to homepage after login
+        else:
+            # Login failed
+            return render_template('login.html', message="Invalid username or password")
 
-    cursor = db_connection.cursor(dictionary=True)
-
-    try:
-        # Search for player names that start with the query (case insensitive)
-        cursor.execute(
-            "SELECT name FROM player WHERE name LIKE %s LIMIT 10",
-            (query + '%',)
-        )
-        players = cursor.fetchall()
-
-        # Extract names from the database results
-        suggestions = [player['name'] for player in players]
-
-        return jsonify({"suggestions": suggestions})
-    except mysql.connector.Error as e:
-        return jsonify({"error": str(e)}), 500
-    finally:
-        cursor.close()
+    return render_template('login.html')
 
 
-# @app.route('/player-stats')
-# def player_stats():
-#     sort_by = request.args.get('sort_by', 'name')
-#     order = request.args.get('order', 'asc')
-    
+@app.route('/logout')
+def logout():
+    session.clear()  # Clear session on logout
+    return redirect('/login')
 
-#     valid_sort_fields = ['icc_ranking', 'career_matches', 'name']
-#     valid_orders = ['asc', 'desc']
-   
-#     cursor = db_connection.cursor(dictionary=True)
 
-#     query = f"SELECT * FROM player ORDER BY {sort_by} {order.upper()}"
 
-#     try:
-#         cursor.execute(query)
-#         players = cursor.fetchall()
-
-#         if not players:
-#             players = []
-        
-#         return render_template('players.html', players=players, sort_by=sort_by, order=order)
-#     except mysql.connector.Error as e:
-#         return f"Error: {e}"
-
-#     finally:
-#         cursor.close()
-
+# Photo mapping for players and coaches
 photo_mapping = {
     'Virat Kohli': 'Virat Kohli.jpg',
     'Rohit Sharma': 'Rohit Sharma.jpg',
@@ -127,26 +76,79 @@ photo_mapping = {
     'T Dilip': 'T Dilip.jpg'
     # Add more player-photo mappings here
 }
-  
+# Player stats with sorting and searching
+@app.route('/player-stats', methods=['GET'])
+def player_stats():
+    sort_by = request.args.get('sort_by', 'name')
+    order = request.args.get('order', 'asc')
+    search_query = request.args.get('search_query', '').strip()
 
+    valid_sort_fields = ['icc_ranking', 'career_matches', 'name']
+    valid_orders = ['asc', 'desc']
+
+    if sort_by not in valid_sort_fields:
+        sort_by = 'name'
+    if order.lower() not in valid_orders:
+        order = 'asc'
+
+    query = f"SELECT * FROM player WHERE name LIKE %s ORDER BY {sort_by} {order.upper()}"
+    search_param = f"%{search_query}%"
+
+    cursor = db_connection.cursor(dictionary=True)
+    try:
+        cursor.execute(query, (search_param,))
+        players = cursor.fetchall()
+        return render_template(
+            'players.html', 
+            players=players, 
+            sort_by=sort_by, 
+            order=order, 
+            search_query=search_query
+        )
+    except mysql.connector.Error as e:
+        return f"Database Error: {e}"
+    finally:
+        cursor.close()
+
+# Player name suggestions for autocomplete
+@app.route('/player-suggestions', methods=['GET'])
+def player_suggestions():
+    query = request.args.get('q', '').strip()
+    if not query:
+        return jsonify({"suggestions": []})
+
+    cursor = db_connection.cursor(dictionary=True)
+    try:
+        cursor.execute(
+            "SELECT name FROM player WHERE name LIKE %s LIMIT 10",
+            (query + '%',)
+        )
+        players = cursor.fetchall()
+        suggestions = [player['name'] for player in players]
+        return jsonify({"suggestions": suggestions})
+    except mysql.connector.Error as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+
+# Bowler stats with sorting
 @app.route('/bowler-stats', methods=['GET'])
 def bowler_stats():
     cursor = db_connection.cursor(dictionary=True)
-    sort_by = request.args.get('sort_by', 'wickets')  # Default sorting column is 'wickets'
-    order = request.args.get('order', 'DESC').upper()  # Default sorting order is 'DESC'
+    sort_by = request.args.get('sort_by', 'wickets')
+    order = request.args.get('order', 'DESC').upper()
 
-    # Validate the input
     if sort_by not in ['wickets', 'economy', 'average']:
         sort_by = 'wickets'
-    if sort_by in['economy','average']:
-        order='ASC'
+    if sort_by in ['economy', 'average']:
+        order = 'ASC'
     if order not in ['ASC', 'DESC']:
         order = 'DESC'
 
-    # Query the database
     query = f"SELECT * FROM bowler_stats ORDER BY {sort_by} {order}"
     cursor.execute(query)
     bowlers = cursor.fetchall()
+
     for bowler in bowlers:
         bowler['photo'] = photo_mapping.get(bowler['name'], 'default.jpg')
 
@@ -157,29 +159,29 @@ def bowler_stats():
         order=order
     )
 
+# Batsman stats
 @app.route('/batsman-stats', methods=['GET'])
 def batsman_stats():
     cursor = db_connection.cursor(dictionary=True)
-    sort_by = request.args.get('sort_by', 'runs')  # Default sorting by 'runs'
+    sort_by = request.args.get('sort_by', 'runs')
 
-    # Validate sort_by parameter
     if sort_by not in ['runs', 'average', 'strike_rate']:
         sort_by = 'runs'
 
-    # Query the view instead of the table
     query = f"SELECT * FROM batsmen_stats ORDER BY {sort_by} DESC"
     try:
         cursor.execute(query)
         batsmen = cursor.fetchall()
     except Exception as e:
         print(f"Error querying the view: {e}")
-        batsmen = []  # Fallback in case of an error
+        batsmen = []
+
     for batsman in batsmen:
-        batsman['photo'] = photo_mapping.get(batsman['name'], 'default.jpg') 
+        batsman['photo'] = photo_mapping.get(batsman['name'], 'default.jpg')
 
     return render_template('batsmen.html', batsmen=batsmen)
 
-
+# Match highlights
 @app.route('/match-highlights')
 def match_highlights():
     cursor = db_connection.cursor(dictionary=True)
@@ -187,13 +189,14 @@ def match_highlights():
     matches = cursor.fetchall()
     return render_template('matches.html', matches=matches)
 
+# Coach details
 @app.route('/coach')
 def coach():
     cursor = db_connection.cursor(dictionary=True)
     cursor.execute("SELECT * FROM coach")
     coaches = cursor.fetchall()
     for coach in coaches:
-        coach['photo'] = photo_mapping.get(coach['name'], 'default.jpg') 
+        coach['photo'] = photo_mapping.get(coach['name'], 'default.jpg')
     return render_template('coach.html', coaches=coaches)
 
 if __name__ == '__main__':

@@ -19,6 +19,9 @@
         <a href="/bowler-stats">Bowler Stats</a>
         <a href="/match-highlights">Match Highlights</a>
         <a href="/coach">Coaches</a>
+        {% if 'username' in session %}
+        <a href="/logout">Logout</a>
+    {% endif %}
       </nav>      
     </nav>
   </header>
