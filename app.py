@@ -15,7 +15,7 @@ bcrypt = Bcrypt(app)
 # Configure MySQL connection
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Shiven29@sql'
+app.config['MYSQL_PASSWORD'] = 'SQL@DBMS'
 app.config['MYSQL_DB'] = 'ICT_2023_CWC'
 
 # Route for home page
@@ -172,7 +172,7 @@ def login():
         user = cur.fetchone()
         cur.close()
 
-        if user and bcrypt.check_password_hash(user[2], password):  # Compare hashed password
+        if user and bcrypt.check_password_hash(user['password_hash'], password):  # Compare hashed password
             flash("Login Successful!", "success")
             session['loggedin'] = True
             session['username'] = username
