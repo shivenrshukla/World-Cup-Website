@@ -746,3 +746,141 @@ footer {
   font-size: 0.9rem;
   margin-top: 40px;
 }
+
+.login-form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.login-form label {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.login-form button.submitter {
+  width: 100%;
+  background-color: #E73493;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.login-form button.submitter:hover {
+  background-color: #c12679;
+}
+
+.login-form .error {
+  color: red;
+  font-size: 0.9em;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* .signup {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.signup a {
+  color: #E73493;
+  text-decoration: none;
+}
+
+.signup a:hover {
+  text-decoration: underline;
+}
+
+/* Signup Page Styling 
+.signup-form {
+  max-width: 450px;
+  margin: 40px auto;
+  padding: 25px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.signup-form h2 {
+  font-size: 2rem;
+  color: #36256E; 
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.signup-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.signup-form input[type="submit"] {
+  background-color: #E73493;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.signup-form input[type="submit"]:hover {
+  background-color: #d62e80;
+}
+
+.signup-form p {
+  text-align: center;
+}
+
+.signup-form p a {
+  color: #E73493;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.signup-form p a:hover {
+  text-decoration: underline;
+} */
+
+/* Add to your existing CSS */
+header {
+  position: relative;
+}
+
+.signout {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  background-color: #36256E;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.signout a {
+  font-size: 16px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.signout a:hover {
+  text-decoration: none;
+}
