@@ -52,7 +52,66 @@ def player_stats():
         return f"Database Error: {e}"
     finally:
         cur.close()
+@app.route('/player/add', methods=['POST'])
+def add_player():
+    try:
+        data = request.form
+        jersey_number = data.get('jersey_number')
+        name = data.get('name')
+        career_matches = data.get('career_matches')
+        icc_ranking = data.get('icc_ranking')
+        age = data.get('age')
 
+        cur = mysql.connection.cursor()
+        cur.execute("""
+            INSERT INTO player (jersey_number, name, career_matches, icc_ranking, age)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (jersey_number, name, career_matches, icc_ranking, age))
+        mysql.connection.commit()
+        cur.close()
+
+        flash("Player added successfully!", "success")
+        return redirect(url_for('player_stats'))
+    except Exception as e:
+        return f"Error adding player: {e}"
+
+# Update Player
+@app.route('/player/update/<int:jersey_number>', methods=['POST'])
+def update_player(jersey_number):
+    try:
+        data = request.form
+        name = data.get('name')
+        career_matches = data.get('career_matches')
+        icc_ranking = data.get('icc_ranking')
+        age = data.get('age')
+
+        cur = mysql.connection.cursor()
+        cur.execute("""
+            UPDATE player 
+            SET name = %s, career_matches = %s, icc_ranking = %s, age = %s
+            WHERE jersey_number = %s
+        """, (name, career_matches, icc_ranking, age, jersey_number))
+        mysql.connection.commit()
+        cur.close()
+
+        flash("Player updated successfully!", "success")
+        return redirect(url_for('player_stats'))
+    except Exception as e:
+        return f"Error updating player: {e}"
+
+# Delete Player
+@app.route('/player/delete/<int:jersey_number>', methods=['POST'])
+def delete_player(jersey_number):
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute("DELETE FROM player WHERE jersey_number = %s", (jersey_number,))
+        mysql.connection.commit()
+        cur.close()
+
+        flash("Player deleted successfully!", "success")
+        return redirect(url_for('player_stats'))
+    except Exception as e:
+        return f"Error deleting player: {e}"
 # Photo mapping for players
 photo_mapping = {
     'Virat Kohli': 'Virat Kohli.jpg',

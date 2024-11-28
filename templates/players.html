@@ -18,9 +18,10 @@
             <a href="/coach">Coaches</a>
         </nav>
     </header>
-    
-    <BR><BR>
 
+    <br><br>
+
+    <!-- Filters and Search Section -->
     <form method="GET" action="/player-stats" class="search-filter">
         <input 
             type="text" 
@@ -40,23 +41,29 @@
             <option value="asc" {% if order == 'asc' %}selected{% endif %}>Ascending</option>
             <option value="desc" {% if order == 'desc' %}selected{% endif %}>Descending</option>
         </select>
-        <button type="submit" id="button">Search</button>
+        <button type="submit" id="button">Filter</button>
     </form>
 
-    {% if search_query and players|length == 1 %}
-    <!-- Display a single player's stats as a card -->
-    <section class="player-card">
-        <img src="{{ url_for('static', filename='images/' + players[0]['name'] + '.jpg') }}" 
-             alt="{{ players[0]['name'] }}" class="player-photo">
-        <h2>{{ players[0]['name'] }}</h2>
-        <p><strong>Jersey Number:</strong> {{ players[0]['jersey_number'] }}</p>
-        <p><strong>Career Matches:</strong> {{ players[0]['career_matches'] }}</p>
-        <p><strong>ICC Ranking:</strong> {{ players[0]['icc_ranking'] }}</p>
-        <p><strong>Age:</strong> {{ players[0]['age'] }}</p>
+    <br>
+
+    <!-- Add Player Section -->
+    <section class="add-player">
+        <h2>Add New Player</h2>
+        <form method="POST" action="/player/add">
+            <input type="number" name="jersey_number" placeholder="Jersey Number" required>
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="number" name="career_matches" placeholder="Career Matches" required>
+            <input type="number" name="icc_ranking" placeholder="ICC Ranking" required>
+            <input type="number" name="age" placeholder="Age" required>
+            <button type="submit">Add Player</button>
+        </form>
     </section>
-    {% else %}
-    <!-- Display all players as a table -->
+
+    <br>
+
+    <!-- Player Stats Section -->
     <section class="player-stats">
+        <h2>Player Stats</h2>
         <table>
             <thead>
                 <tr>
@@ -65,6 +72,7 @@
                     <th>Career Matches</th>
                     <th>ICC Ranking</th>
                     <th>Age</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -75,18 +83,60 @@
                     <td>{{ player.career_matches }}</td>
                     <td>{{ player.icc_ranking }}</td>
                     <td>{{ player.age }}</td>
+                    <td>
+                        <!-- Edit Button -->
+                        <button onclick="openEditModal({{ player.jersey_number }}, '{{ player.name }}', 
+                                                       {{ player.career_matches }}, {{ player.icc_ranking }}, {{ player.age }})">
+                            Edit
+                        </button>
+                        
+                        <!-- Delete Button -->
+                        <form method="POST" action="/player/delete/{{ player.jersey_number }}" style="display:inline;">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </section>
-    {% endif %}
+
+    <!-- Edit Player Modal -->
+    <div id="editModal" style="display:none; position: fixed; top: 20%; left: 30%; background-color: white; padding: 20px; border: 1px solid black;">
+        <h2>Edit Player</h2>
+        <form method="POST" id="editForm">
+            <input type="hidden" name="jersey_number" id="edit-jersey-number">
+            <input type="text" name="name" id="edit-name" placeholder="Name" required>
+            <input type="number" name="career_matches" id="edit-career-matches" placeholder="Career Matches" required>
+            <input type="number" name="icc_ranking" id="edit-icc-ranking" placeholder="ICC Ranking" required>
+            <input type="number" name="age" id="edit-age" placeholder="Age" required>
+            <button type="submit">Update Player</button>
+            <button type="button" onclick="closeEditModal()">Cancel</button>
+        </form>
+    </div>
 
     <footer>
         <p>&copy; 2023 Cricket Stats Website</p>
     </footer>
 
     <script>
+        // Open Edit Modal with Player Data
+        function openEditModal(jerseyNumber, name, careerMatches, iccRanking, age) {
+            document.getElementById('edit-jersey-number').value = jerseyNumber;
+            document.getElementById('edit-name').value = name;
+            document.getElementById('edit-career-matches').value = careerMatches;
+            document.getElementById('edit-icc-ranking').value = iccRanking;
+            document.getElementById('edit-age').value = age;
+            document.getElementById('editForm').action = `/player/update/${jerseyNumber}`;
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        // Close Edit Modal
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        // Fetch player suggestions for autocomplete
         document.getElementById('search-bar').addEventListener('input', async function () {
             const query = this.value.trim();
             if (query) {
