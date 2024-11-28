@@ -16,7 +16,7 @@ bcrypt = Bcrypt(app)
 # Configure MySQL connection
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Shiven29@sql'
+app.config['MYSQL_PASSWORD'] = 'SQL@DBMS'
 app.config['MYSQL_DB'] = 'ICT_2023_CWC'
 
 # Route for home page
@@ -210,14 +210,7 @@ def match_highlights():
     matches = cur.fetchall()
     return render_template('matches.html', matches=matches)
 
-@app.route('/coach')
-def coach():
-    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute("SELECT * FROM coach")
-    coaches = cur.fetchall()
-    for coach in coaches:
-        coach['photo'] = photo_mapping.get(coach['name'], 'default.jpg') 
-    return render_template('coach.html', coaches=coaches)
+
 
 # Login route
 @app.route("/login", methods=["GET", "POST"])
@@ -292,9 +285,23 @@ def signup():
 
     return render_template('signup.html')
 
+@app.route('/coach', methods=['GET'])
+def coach():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    try:
+        cur.execute("SELECT * FROM coach")
+        coaches = cur.fetchall()
+        return render_template('coach.html', coaches=coaches)
+    except Exception as e:
+        return f"Database Error: {e}"
+    finally:
+        cur.close()
+
+
 @app.route('/coach/add', methods=['POST'])
 def add_coach():
-    # Remove the photo handling logic
+    # Get data from the form
+    coach_id = request.form['coach_id']  # Assuming you're adding coach_id manually for now
     name = request.form['name']
     designation = request.form['designation']
     experience = request.form['experience']
@@ -306,14 +313,14 @@ def add_coach():
         flash('Coaching period must be a number.', 'danger')
         return redirect(request.url)
 
-    # Insert into the database
+    # Insert into the database (including coach_id if needed)
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     try:
         query = """
-            INSERT INTO coach (name, designation, nationality, experience, coaching_period)
-            VALUES (%s, %s, %s, %s, %s)
+            INSERT INTO coach (coach_id, name, designation, nationality, experience, coaching_period)
+            VALUES (%s, %s, %s, %s, %s, %s)
         """
-        cur.execute(query, (name, designation, nationality, experience, int(coaching_period)))
+        cur.execute(query, (coach_id, name, designation, nationality, experience, int(coaching_period)))
         mysql.connection.commit()
         flash('Coach added successfully!', 'success')
     except Exception as e:
@@ -321,21 +328,22 @@ def add_coach():
     finally:
         cur.close()
 
-    return redirect(url_for('coach'))
+    return redirect(url_for('coach'))  # Redirect back to the coaches page
+
+
 
 @app.route('/coach/delete/<int:coach_id>', methods=['POST'])
 def delete_coach(coach_id):
-    cur = mysql.connection.cursor()
     try:
-        # Delete the coach from the database by ID
-        cur.execute('DELETE FROM coach WHERE id = %s', (coach_id,))
+        cur = mysql.connection.cursor()
+        cur.execute("DELETE FROM coach WHERE coach_id = %s", (coach_id,))
         mysql.connection.commit()
-        flash('Coach deleted successfully!', 'success')
+        flash("Coach deleted successfully!", "success")
     except Exception as e:
-        flash(f'Error deleting coach: {e}', 'danger')
+        flash(f"Error deleting coach: {e}", "danger")
     finally:
         cur.close()
-    return redirect(url_for('coach'))  # Redirect back to the coaches page
+    return redirect(url_for('coach'))
 
 if __name__ == '__main__':
     app.run(debug=True)
