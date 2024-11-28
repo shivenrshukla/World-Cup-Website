@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
 from flask_mysqldb import MySQL
 from flask_bcrypt import Bcrypt
+from werkzeug.utils import secure_filename
 import MySQLdb.cursors
 
 app = Flask(__name__)
@@ -15,7 +16,7 @@ bcrypt = Bcrypt(app)
 # Configure MySQL connection
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'SQL@DBMS'
+app.config['MYSQL_PASSWORD'] = 'Shiven29@sql'
 app.config['MYSQL_DB'] = 'ICT_2023_CWC'
 
 # Route for home page
@@ -290,6 +291,51 @@ def signup():
         return redirect(url_for('login'))
 
     return render_template('signup.html')
+
+@app.route('/coach/add', methods=['POST'])
+def add_coach():
+    # Remove the photo handling logic
+    name = request.form['name']
+    designation = request.form['designation']
+    experience = request.form['experience']
+    nationality = request.form['nationality']
+    coaching_period = request.form['coaching_period']
+
+    # Validate the coaching period is a number
+    if not coaching_period.isdigit():
+        flash('Coaching period must be a number.', 'danger')
+        return redirect(request.url)
+
+    # Insert into the database
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    try:
+        query = """
+            INSERT INTO coach (name, designation, nationality, experience, coaching_period)
+            VALUES (%s, %s, %s, %s, %s)
+        """
+        cur.execute(query, (name, designation, nationality, experience, int(coaching_period)))
+        mysql.connection.commit()
+        flash('Coach added successfully!', 'success')
+    except Exception as e:
+        flash(f'Error adding coach: {e}', 'danger')
+    finally:
+        cur.close()
+
+    return redirect(url_for('coach'))
+
+@app.route('/coach/delete/<int:coach_id>', methods=['POST'])
+def delete_coach(coach_id):
+    cur = mysql.connection.cursor()
+    try:
+        # Delete the coach from the database by ID
+        cur.execute('DELETE FROM coach WHERE id = %s', (coach_id,))
+        mysql.connection.commit()
+        flash('Coach deleted successfully!', 'success')
+    except Exception as e:
+        flash(f'Error deleting coach: {e}', 'danger')
+    finally:
+        cur.close()
+    return redirect(url_for('coach'))  # Redirect back to the coaches page
 
 if __name__ == '__main__':
     app.run(debug=True)

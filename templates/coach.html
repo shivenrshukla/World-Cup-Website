@@ -1,48 +1,3 @@
-<!--  <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coaches - Indian Cricket Team</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
-</head>
-<body>
-
-  <header>
-    <h1>Indian Cricket Team - World Cup 2023 Stats</h1>
-    <nav>
-      <nav> 
-        <a href="/">Home</a>
-        <a href="/player-stats">Player Stats</a>
-        <a href="/batsman-stats">Batsman Stats</a>
-        <a href="/bowler-stats">Bowler Stats</a>
-        <a href="/match-highlights">Match Highlights</a>
-        <a href="/coach">Coaches</a>
-      </nav>      
-    </nav>
-  </header>
-
-  <section class="coach">
-    <h2>Coaching Staff</h2>
-    <div class="coach-cards">
-      {% for coach in coaches %}
-        <div class="coach-card">
-          <h3>{{ coach.name }}</h3>
-          <p>Role: {{ coach.designation }}</p>
-          <p>Experience: {{ coach.experience }}</p>
-          <p>Nationality: {{ coach.nationality }}</p>
-        </div>
-      {% endfor %}
-    </div>
-  </section>
-
-  <footer>
-    <p>&copy; 2023 Cricket Stats Website</p>
-  </footer>
-
-</body>
-</html> 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,46 +19,28 @@
     </nav>
   </header>
 
-  <section class="coach">
-    <h2>Coaching Staff</h2>
-    <div class="player-cards">
-      {% for coach in coaches %}
-        <div class="player-card">
-          <h3>{{ coach.name }}</h3>
-          <p><strong>Role:</strong> {{ coach.designation }}</p>
-          <p><strong>Experience:</strong> {{ coach.experience }} years</p>
-          <p><strong>Nationality:</strong> {{ coach.nationality }}</p>
-        </div>
-      {% endfor %}
-    </div>
+  <!-- Display flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul>
+        {% for category, message in messages %}
+          <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <section class="add-coach">
+    <h2>Add New Coach</h2>
+    <form method="POST" action="/coach/add">
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="text" name="designation" placeholder="Role/Designation" required>
+      <input type="text" name="experience" placeholder="Experience" required>
+      <input type="text" name="nationality" placeholder="Nationality" required>
+      <input type="number" name="coaching_period" placeholder="Coaching Period (in months)" required>
+      <button type="submit">Add Coach</button>
+    </form>
   </section>
-
-  <footer>
-    <p>&copy; 2023 Cricket Stats Website</p>
-  </footer>
-</body>
-</html> -->
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coaches - Indian Cricket Team</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
-</head>
-<body>
-  <header>
-    <h1>Indian Cricket Team - World Cup 2023 Stats</h1>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/player-stats">Player Stats</a>
-      <a href="/batsman-stats">Batsman Stats</a>
-      <a href="/bowler-stats">Bowler Stats</a>
-      <a href="/match-highlights">Match Highlights</a>
-      <a href="/coach">Coaches</a>
-    </nav>
-  </header>
 
   <section class="coach">
     <h2>Coaching Staff</h2>
@@ -115,6 +52,7 @@
           <th>Role</th>
           <th>Experience</th>
           <th>Nationality</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -125,6 +63,11 @@
           <td>{{ coach.designation }}</td>
           <td>{{ coach.experience }}</td>
           <td>{{ coach.nationality }}</td>
+          <td class="edit">
+            <form method="POST" action="/coach/delete/{{ coach.id }}" style="display: inline;">
+              <button type="submit" onclick="return confirm('Are you sure you want to delete this coach?');">Delete</button>
+            </form>
+          </td>
         </tr>
         {% endfor %}
       </tbody>

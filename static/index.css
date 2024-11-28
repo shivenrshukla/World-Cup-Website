@@ -280,6 +280,212 @@ td img:hover {
   font-size: 1rem;
 }
 
+/* .add-player {
+  background-color: #fff; 
+  max-width: 400px; 
+  margin: 50px auto; 
+  padding: 20px; 
+  border-radius: 8px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.add-player h2 {
+  text-align: center; 
+  color: #E73493; 
+  margin-bottom: 20px; 
+}
+
+.add-player form {
+  display: flex; 
+  flex-direction: column; 
+}
+
+.add-player input {
+  padding: 10px; 
+  margin: 10px 0; /
+  border: 1px solid #ddd; 
+  border-radius: 4px; 
+  font-size: 14px; 
+
+.add-player button {
+  background-color: #E73493; 
+  color: #fff; 
+  border: none; 
+  padding: 10px; 
+  border-radius: 4px; 
+  cursor: pointer; 
+  font-size: 16px; 
+}
+
+.add-player button:hover {
+  background-color: #c12679; 
+} */
+
+.add-player {
+  background-color: #fff; /* White background for form container */
+  max-width: 600px; /* Wider container for horizontal layout */
+  margin: 50px auto; /* Center align on the page */
+  padding: 20px; /* Add padding inside the form */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.add-player h2 {
+  text-align: center; /* Center the heading */
+  color: #E73493; /* Accent color */
+  margin-bottom: 20px; /* Add space below the heading */
+}
+
+.add-player form {
+  display: flex; /* Use flexbox for layout */
+  flex-wrap: wrap; /* Wrap inputs to the next line if they don't fit */
+  gap: 10px; /* Space between elements */
+  justify-content: space-between; /* Distribute items with space between */
+}
+
+.add-player input {
+  flex: 1 1 calc(30% - 10px); /* Flexible width for inputs (30% of row, minus gap) */
+  padding: 10px; /* Add padding to inputs */
+  border: 1px solid #ddd; /* Light gray border */
+  border-radius: 4px; /* Rounded corners for inputs */
+  font-size: 14px; /* Standard font size */
+  min-width: 120px; /* Ensure inputs don't shrink too small */
+}
+
+.add-player button {
+  flex: 1 1 calc(30% - 10px); /* Align button with inputs */
+  background-color: #E73493; /* Accent color for the button */
+  color: #fff; /* White text color */
+  border: none; /* Remove border */
+  padding: 10px; /* Button padding */
+  border-radius: 4px; /* Rounded corners for the button */
+  cursor: pointer; /* Pointer cursor for hover */
+  font-size: 16px; /* Slightly larger text size for button */
+}
+
+.add-player button:hover {
+  background-color: #c12679; /* Darker shade on hover */
+}
+
+.edit button{
+  font-size: 1em;
+  background-color: #E73493;
+  color: #fff;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+/* .delete-form {
+  display: inline; 
+  align-items: center; 
+  margin: 0 5px; 
+}
+
+.delete-form button {
+  background-color: #E73493; 
+  color: #fff; 
+  border: none; 
+  padding: 8px 12px; 
+  border-radius: 4px; 
+  cursor: pointer; 
+  font-size: 14px; 
+  text-align: center; 
+  min-width: 80px; 
+}
+
+.delete-form button:hover {
+  background-color: #c12679; 
+  transform: scale(1.05); 
+  transition: all 0.2s ease-in-out; 
+} */
+
+/* General modal styling */
+#editModal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the modal */
+  background-color: #fff; /* White background for contrast */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  border-radius: 8px; /* Rounded corners */
+  width: 400px; /* Fixed width */
+  max-width: 90%; /* Responsive */
+  padding: 20px; /* Spacing inside the modal */
+  z-index: 1000; /* Ensure it stays above other elements */
+}
+
+/* Modal heading */
+#editModal h2 {
+  text-align: center;
+  color: #E73493; /* Accent color */
+  margin-bottom: 20px; /* Spacing below the heading */
+}
+
+/* Form inside modal */
+#editModal form {
+  display: flex;
+  flex-direction: column; /* Stack inputs vertically */
+}
+
+/* Input fields */
+#editModal input[type="text"],
+#editModal input[type="number"],
+#editModal input[type="hidden"] {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd; /* Subtle border */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 14px;
+}
+
+/* Buttons inside modal */
+#editModal button[type="submit"],
+#editModal button[type="button"] {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Submit button */
+#editModal button[type="submit"] {
+  background-color: #E73493; /* Accent color */
+  color: #fff; /* White text */
+  margin-bottom: 10px; /* Space between buttons */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#editModal button[type="submit"]:hover {
+  background-color: #c12679; /* Darker shade */
+  transform: scale(1.05); /* Slight zoom */
+}
+
+/* Cancel button */
+#editModal button[type="button"] {
+  background-color: #ddd; /* Neutral color */
+  color: #333; /* Dark text */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#editModal button[type="button"]:hover {
+  background-color: #bbb; /* Darker neutral */
+  transform: scale(1.05); /* Slight zoom */
+}
+
+/* Modal background overlay */
+#editModalOverlay {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+  z-index: 999; /* Below the modal */
+}
+
 .player-cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -459,6 +665,67 @@ table tbody img {
   font-family: 'Courier New', Courier, monospace;
   font-weight: 900;
   font-size: large;
+}
+
+.add-coach {
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 600px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.add-coach h2 {
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.add-coach form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: space-between;
+}
+
+.add-coach input[type="text"],
+.add-coach input[type="number"],
+.add-coach input[type="file"] {
+  flex: 1 1 calc(48% - 10px);
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-coach input[type="file"] {
+  flex: 1 1 100%; /* File input spans the full width */
+}
+
+.add-coach button {
+  flex: 1 1 100%;
+  padding: 10px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #E73493;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-coach button:hover {
+  background-color: #36256E;
+}
+
+.add-coach input:focus,
+.add-coach button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  border-color: #007bff;
 }
 
 /* Slider Wrapper */

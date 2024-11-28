@@ -46,6 +46,18 @@
 
     <br>
 
+    {% if search_query and players|length == 1 %}
+    <!-- Display a single player's stats as a card -->
+    <section class="player-card">
+        <img src="{{ url_for('static', filename='images/' + players[0]['name'] + '.jpg') }}" 
+             alt="{{ players[0]['name'] }}" class="player-photo">
+        <h2>{{ players[0]['name'] }}</h2>
+        <p><strong>Jersey Number:</strong> {{ players[0]['jersey_number'] }}</p>
+        <p><strong>Career Matches:</strong> {{ players[0]['career_matches'] }}</p>
+        <p><strong>ICC Ranking:</strong> {{ players[0]['icc_ranking'] }}</p>
+        <p><strong>Age:</strong> {{ players[0]['age'] }}</p>
+    </section>
+    {% else %}
     <!-- Add Player Section -->
     <section class="add-player">
         <h2>Add New Player</h2>
@@ -60,7 +72,6 @@
     </section>
 
     <br>
-
     <!-- Player Stats Section -->
     <section class="player-stats">
         <h2>Player Stats</h2>
@@ -83,15 +94,15 @@
                     <td>{{ player.career_matches }}</td>
                     <td>{{ player.icc_ranking }}</td>
                     <td>{{ player.age }}</td>
-                    <td>
+                    <td class="edit">
                         <!-- Edit Button -->
-                        <button onclick="openEditModal({{ player.jersey_number }}, '{{ player.name }}', 
-                                                       {{ player.career_matches }}, {{ player.icc_ranking }}, {{ player.age }})">
+                        <button onclick="openEditModal('{{ player.jersey_number }}, {{ player.name }}', 
+                                                       '{{ player.career_matches }}, {{ player.icc_ranking }}, {{ player.age }}')">
                             Edit
                         </button>
                         
                         <!-- Delete Button -->
-                        <form method="POST" action="/player/delete/{{ player.jersey_number }}" style="display:inline;">
+                        <form method="POST" action="/player/delete/{{ player.jersey_number }}" style="display: inline;">
                             <button type="submit">Delete</button>
                         </form>
                     </td>
@@ -100,9 +111,11 @@
             </tbody>
         </table>
     </section>
+    {% endif %}
 
     <!-- Edit Player Modal -->
-    <div id="editModal" style="display:none; position: fixed; top: 20%; left: 30%; background-color: white; padding: 20px; border: 1px solid black;">
+    <div id="editModalOverlay" onclick="closeEditModal()"></div> 
+    <div id="editModal">
         <h2>Edit Player</h2>
         <form method="POST" id="editForm">
             <input type="hidden" name="jersey_number" id="edit-jersey-number">
