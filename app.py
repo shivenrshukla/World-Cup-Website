@@ -16,7 +16,7 @@ bcrypt = Bcrypt(app)
 # Configure MySQL connection
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'SQL@DBMS'
+app.config['MYSQL_PASSWORD'] = 'Shiven29@sql'
 app.config['MYSQL_DB'] = 'ICT_2023_CWC'
 
 # Route for home page

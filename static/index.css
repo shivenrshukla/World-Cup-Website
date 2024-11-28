@@ -199,6 +199,16 @@ main h2 {
   color: #fff;
 }
 
+.matches-card:hover button{
+  background-color: gold;
+  color: black;
+}
+
+.matches-card:hover button:hover{
+  background-color: #E73493;
+  color: #fff;
+}
+
 .spacer-row td {
   border: none;
   padding: 0;
@@ -280,47 +290,6 @@ td img:hover {
   font-size: 1rem;
 }
 
-/* .add-player {
-  background-color: #fff; 
-  max-width: 400px; 
-  margin: 50px auto; 
-  padding: 20px; 
-  border-radius: 8px; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-}
-
-.add-player h2 {
-  text-align: center; 
-  color: #E73493; 
-  margin-bottom: 20px; 
-}
-
-.add-player form {
-  display: flex; 
-  flex-direction: column; 
-}
-
-.add-player input {
-  padding: 10px; 
-  margin: 10px 0; /
-  border: 1px solid #ddd; 
-  border-radius: 4px; 
-  font-size: 14px; 
-
-.add-player button {
-  background-color: #E73493; 
-  color: #fff; 
-  border: none; 
-  padding: 10px; 
-  border-radius: 4px; 
-  cursor: pointer; 
-  font-size: 16px; 
-}
-
-.add-player button:hover {
-  background-color: #c12679; 
-} */
-
 .add-player {
   background-color: #fff; /* White background for form container */
   max-width: 600px; /* Wider container for horizontal layout */
@@ -364,7 +333,7 @@ td img:hover {
 }
 
 .add-player button:hover {
-  background-color: #c12679; /* Darker shade on hover */
+  background-color: #36256E; /* Darker shade on hover */
 }
 
 .edit button{
@@ -374,30 +343,6 @@ td img:hover {
   padding: 8px;
   border-radius: 10px;
 }
-
-/* .delete-form {
-  display: inline; 
-  align-items: center; 
-  margin: 0 5px; 
-}
-
-.delete-form button {
-  background-color: #E73493; 
-  color: #fff; 
-  border: none; 
-  padding: 8px 12px; 
-  border-radius: 4px; 
-  cursor: pointer; 
-  font-size: 14px; 
-  text-align: center; 
-  min-width: 80px; 
-}
-
-.delete-form button:hover {
-  background-color: #c12679; 
-  transform: scale(1.05); 
-  transition: all 0.2s ease-in-out; 
-} */
 
 /* General modal styling */
 #editModal {
@@ -1061,72 +1006,6 @@ footer {
   margin-top: 10px;
 }
 
-/* .signup {
-  text-align: center;
-  margin-top: 10px;
-}
-
-.signup a {
-  color: #E73493;
-  text-decoration: none;
-}
-
-.signup a:hover {
-  text-decoration: underline;
-}
-
-/* Signup Page Styling 
-.signup-form {
-  max-width: 450px;
-  margin: 40px auto;
-  padding: 25px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.signup-form h2 {
-  font-size: 2rem;
-  color: #36256E; 
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.signup-form input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-
-.signup-form input[type="submit"] {
-  background-color: #E73493;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 1.1rem;
-}
-
-.signup-form input[type="submit"]:hover {
-  background-color: #d62e80;
-}
-
-.signup-form p {
-  text-align: center;
-}
-
-.signup-form p a {
-  color: #E73493;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.signup-form p a:hover {
-  text-decoration: underline;
-} */
-
 /* Add to your existing CSS */
 header {
   position: relative;
@@ -1150,4 +1029,85 @@ header {
 
 .signout a:hover {
   text-decoration: none;
+}
+
+.btn-primary{
+  padding: 10px;
+  background-color: #E73493;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1.1em;
+}
+
+.btn-primary a{
+  text-decoration: none;
+  color: #fff;
+}
+
+.btn-primary:hover{
+  background-color: #36256E;
+}
+
+/* Edit Match Section */
+#edit-match {
+  background-color: #ffffff;
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif; /* Encapsulated font style */
+  color: #333; /* Local text color */
+}
+
+#edit-match h2 {
+  text-align: center;
+  color: #2c3e50;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+#edit-match form {
+  display: flex;
+  flex-direction: column;
+}
+
+#edit-match label {
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #555;
+}
+
+#edit-match input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+#edit-match button {
+  padding: 10px 15px;
+  margin-top: 20px;
+  font-size: 1rem;
+  color: white;
+  background-color: #36256E;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#edit-match button:hover {
+  background-color: #E73493;
+}
+
+/* Cancel Button */
+#edit-match form[action="/match-highlights"] button {
+  background-color: #36256E;
+}
+
+#edit-match form[action="/match-highlights"] button:hover {
+  background-color: #E73493;
 }

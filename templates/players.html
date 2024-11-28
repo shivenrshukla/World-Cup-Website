@@ -96,7 +96,9 @@
             <td>{{ player.icc_ranking }}</td>
             <td>{{ player.age }}</td>
             <td>
-                <a href="{{ url_for('edit_player', jersey_number=player.jersey_number) }}" class="btn btn-primary">Edit</a>
+                <div class="btn-primary">
+                    <a href="{{ url_for('edit_player', jersey_number=player.jersey_number) }}">Edit</a>
+                </div>
             </td>
         </tr>
         {% endfor %}
