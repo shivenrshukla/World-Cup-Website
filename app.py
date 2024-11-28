@@ -77,28 +77,38 @@ def add_player():
         return f"Error adding player: {e}"
 
 # Update Player
-@app.route('/player/update/<int:jersey_number>', methods=['POST'])
-def update_player(jersey_number):
-    try:
-        data = request.form
-        name = data.get('name')
-        career_matches = data.get('career_matches')
-        icc_ranking = data.get('icc_ranking')
-        age = data.get('age')
+@app.route('/player/edit/<int:jersey_number>', methods=['GET', 'POST'])
+def edit_player(jersey_number):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    
+    if request.method == 'GET':
+        # Fetch current player details
+        cur.execute("SELECT * FROM player WHERE jersey_number = %s", (jersey_number,))
+        player = cur.fetchone()
+        return render_template('player_edit.html', player=player)
 
-        cur = mysql.connection.cursor()
-        cur.execute("""
-            UPDATE player 
-            SET name = %s, career_matches = %s, icc_ranking = %s, age = %s
-            WHERE jersey_number = %s
-        """, (name, career_matches, icc_ranking, age, jersey_number))
-        mysql.connection.commit()
-        cur.close()
+    if request.method == 'POST':
+        # Update the player details
+        name = request.form['name']
+        career_matches = request.form['career_matches']
+        icc_ranking = request.form['icc_ranking']
+        age = request.form['age']
 
-        flash("Player updated successfully!", "success")
+        try:
+            cur.execute("""
+                UPDATE player
+                SET name = %s, career_matches = %s, icc_ranking = %s, age = %s
+                WHERE jersey_number = %s
+            """, (name, career_matches, icc_ranking, age, jersey_number))
+            mysql.connection.commit()
+            flash('Player details updated successfully!', 'success')
+        except Exception as e:
+            flash(f'Error updating player: {e}', 'danger')
+        finally:
+            cur.close()
+
         return redirect(url_for('player_stats'))
-    except Exception as e:
-        return f"Error updating player: {e}"
+
 
 # Delete Player
 @app.route('/player/delete/<int:jersey_number>', methods=['POST'])
@@ -203,13 +213,87 @@ def player_suggestions():
         cur.close()
 
 # Route for match highlights
-@app.route('/match-highlights')
-def match_highlights():
+@app.route('/matches', methods=['GET', 'POST'])
+def manage_matches():
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cur.execute("SELECT * FROM matches")
     matches = cur.fetchall()
+    cur.close()
     return render_template('matches.html', matches=matches)
 
+
+@app.route('/matches/add', methods=['POST'])
+def add_match():
+    match_number = request.form['match_number']
+    opponent = request.form['opponent']
+    venue = request.form['venue']
+    team_score = request.form['team_score']
+    opponent_team_score = request.form['opponent_team_score']
+    overs_played = request.form['overs_played']
+    result = request.form['result']
+    player_of_the_match = request.form['player_of_the_match']
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    try:
+        cur.execute("""
+            INSERT INTO matches (match_number, opponent, venue, team_score, opponent_team_score, overs_played, result, player_of_the_match)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        """, (match_number, opponent, venue, team_score, opponent_team_score, overs_played, result, player_of_the_match))
+        mysql.connection.commit()
+        flash('Match added successfully!', 'success')
+    except Exception as e:
+        flash(f'Error adding match: {e}', 'danger')
+    finally:
+        cur.close()
+    return redirect(url_for('manage_matches'))
+
+@app.route('/matches/edit/<int:match_number>', methods=['GET'])
+def edit_match(match_number):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM matches WHERE match_number = %s", (match_number,))
+    match = cur.fetchone()
+    cur.close()
+    if not match:
+        flash("Match not found!", "danger")
+        return redirect(url_for('match_highlights'))
+    return render_template('edit_match.html', match=match)
+@app.route('/matches/update/<int:match_number>', methods=['POST'])
+def update_match(match_number):
+    cur = mysql.connection.cursor()
+    try:
+        # Fetch form data
+        data = request.form
+        query = """
+            UPDATE matches
+            SET opponent = %s, venue = %s, team_score = %s, opponent_team_score = %s,
+                overs_played = %s, result = %s, player_of_the_match = %s
+            WHERE match_number = %s
+        """
+        cur.execute(query, (
+            data['opponent'], data['venue'], data['team_score'],
+            data['opponent_team_score'], data['overs_played'], data['result'],
+            data['player_of_the_match'], match_number
+        ))
+        mysql.connection.commit()
+        flash("Match updated successfully!", "success")
+    except Exception as e:
+        flash(f"Error updating match: {e}", "danger")
+    finally:
+        cur.close()
+    return redirect(url_for('manage_matches'))
+
+@app.route('/matches/delete/<int:match_number>', methods=['POST'])
+def delete_match(match_number):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    try:
+        cur.execute("DELETE FROM matches WHERE match_number=%s", (match_number,))
+        mysql.connection.commit()
+        flash('Match deleted successfully!', 'success')
+    except Exception as e:
+        flash(f'Error deleting match: {e}', 'danger')
+    finally:
+        cur.close()
+    return redirect(url_for('manage_matches'))
 
 
 # Login route

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Match</title>
+    <link rel="stylesheet" href="/static/index.css">
+</head>
+<body>
+    <header>
+        <h1>Indian Cricket Team - World Cup 2023 Stats</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/player-stats">Player Stats</a>
+            <a href="/batsman-stats">Batsman Stats</a>
+            <a href="/bowler-stats">Bowler Stats</a>
+            <a href="/match-highlights">Match Highlights</a>
+            <a href="/coach">Coaches</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>Edit Match</h2>
+            <form method="POST" action="/matches/update/{{ match.match_number }}">
+                <input type="hidden" name="match_number" value="{{ match.match_number }}">
+                <label>
+                    Opponent:
+                    <input type="text" name="opponent" value="{{ match.opponent }}" required>
+                </label>
+                <label>
+                    Venue:
+                    <input type="text" name="venue" value="{{ match.venue }}" required>
+                </label>
+                <label>
+                    Team Score:
+                    <input type="text" name="team_score" value="{{ match.team_score }}" required>
+                </label>
+                <label>
+                    Opponent Score:
+                    <input type="text" name="opponent_team_score" value="{{ match.opponent_team_score }}" required>
+                </label>
+                <label>
+                    Overs Played:
+                    <input type="number" name="overs_played" value="{{ match.overs_played }}" required>
+                </label>
+                <label>
+                    Result:
+                    <input type="text" name="result" value="{{ match.result }}" required>
+                </label>
+                <label>
+                    Player of the Match:
+                    <input type="text" name="player_of_the_match" value="{{ match.player_of_the_match }}" required>
+                </label>
+                <button type="submit">Save Changes</button>
+            </form>
+            <form action="/match-highlights" method="GET">
+                <button type="submit">Cancel</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Cricket Stats Website</p>
+    </footer>
+</body>
+</html>

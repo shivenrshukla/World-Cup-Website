@@ -1,0 +1,52 @@
+_<!-- player_edit.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Player</title>
+    <link rel="stylesheet" href="/static/index.css">
+</head>
+<body>
+    <header>
+        <h1>Indian Cricket Team - World Cup 2023 Stats</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/player-stats">Player Stats</a>
+            <a href="/batsman-stats">Batsman Stats</a>
+            <a href="/bowler-stats">Bowler Stats</a>
+            <a href="/match-highlights">Match Highlights</a>
+            <a href="/coach">Coaches</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="edit-player">
+            <h2>Edit Player Details</h2>
+            <form method="POST" action="/player/edit/{{ player.jersey_number }}">
+                <div>
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" value="{{ player.name }}" required>
+                </div>
+                <div>
+                    <label for="career_matches">Career Matches:</label>
+                    <input type="number" name="career_matches" value="{{ player.career_matches }}" required>
+                </div>
+                <div>
+                    <label for="icc_ranking">ICC Ranking:</label>
+                    <input type="number" name="icc_ranking" value="{{ player.icc_ranking }}" required>
+                </div>
+                <div>
+                    <label for="age">Age:</label>
+                    <input type="number" name="age" value="{{ player.age }}" required>
+                </div>
+                <button type="submit">Update Player</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Cricket Stats Website</p>
+    </footer>
+</body>
+</html>

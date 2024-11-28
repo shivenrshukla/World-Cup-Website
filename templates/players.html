@@ -14,7 +14,7 @@
             <a href="/player-stats">Player Stats</a>
             <a href="/batsman-stats">Batsman Stats</a>
             <a href="/bowler-stats">Bowler Stats</a>
-            <a href="/match-highlights">Match Highlights</a>
+            <a href="/matches">Match Highlights</a>
             <a href="/coach">Coaches</a>
         </nav>
     </header>
@@ -75,41 +75,34 @@
     <!-- Player Stats Section -->
     <section class="player-stats">
         <h2>Player Stats</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Jersey Number</th>
-                    <th>Name</th>
-                    <th>Career Matches</th>
-                    <th>ICC Ranking</th>
-                    <th>Age</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for player in players %}
-                <tr>
-                    <td>{{ player.jersey_number }}</td>
-                    <td>{{ player.name }}</td>
-                    <td>{{ player.career_matches }}</td>
-                    <td>{{ player.icc_ranking }}</td>
-                    <td>{{ player.age }}</td>
-                    <td class="edit">
-                        <!-- Edit Button -->
-                        <button onclick="openEditModal('{{ player.jersey_number }}, {{ player.name }}', 
-                                                       '{{ player.career_matches }}, {{ player.icc_ranking }}, {{ player.age }}')">
-                            Edit
-                        </button>
-                        
-                        <!-- Delete Button -->
-                        <form method="POST" action="/player/delete/{{ player.jersey_number }}" style="display: inline;">
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <!-- player.html -->
+<table>
+    <thead>
+        <tr>
+            <th>Jersey Number</th>
+            <th>Name</th>
+            <th>Career Matches</th>
+            <th>ICC Ranking</th>
+            <th>Age</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for player in players %}
+        <tr>
+            <td>{{ player.jersey_number }}</td>
+            <td>{{ player.name }}</td>
+            <td>{{ player.career_matches }}</td>
+            <td>{{ player.icc_ranking }}</td>
+            <td>{{ player.age }}</td>
+            <td>
+                <a href="{{ url_for('edit_player', jersey_number=player.jersey_number) }}" class="btn btn-primary">Edit</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
     </section>
     {% endif %}
 
