@@ -1,0 +1,6 @@
+.env
+Procfile
+requirements.txt
+sql/
+__pycache__/
+venv/

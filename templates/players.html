@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Stats</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Indian Cricket Team - World Cup 2023 Stats</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/player-stats">Player Stats</a>
+            <a href="/batsman-stats">Batsman Stats</a>
+            <a href="/bowler-stats">Bowler Stats</a>
+            <a href="/match-highlights">Match Highlights</a>
+            <a href="/coach">Coaches</a>
+        </nav>
+    </header>
+    
+    <BR><BR>
+
+    <form method="GET" action="/player-stats" class="search-filter">
+        <input 
+            type="text" 
+            name="search_query" 
+            id="search-bar" 
+            placeholder="Search by player name" 
+            value="{{ search_query }}" 
+            list="suggestions"
+        />
+        <datalist id="suggestions"></datalist>
+        <select name="sort_by">
+            <option value="name" {% if sort_by == 'name' %}selected{% endif %}>Name</option>
+            <option value="icc_ranking" {% if sort_by == 'icc_ranking' %}selected{% endif %}>ICC Ranking</option>
+            <option value="career_matches" {% if sort_by == 'career_matches' %}selected{% endif %}>Career Matches</option>
+        </select>
+        <select name="order">
+            <option value="asc" {% if order == 'asc' %}selected{% endif %}>Ascending</option>
+            <option value="desc" {% if order == 'desc' %}selected{% endif %}>Descending</option>
+        </select>
+        <button type="submit" id="button">Search</button>
+    </form>
+
+    {% if search_query and players|length == 1 %}
+    <!-- Display a single player's stats as a card -->
+    <section class="player-card">
+        <img src="{{ url_for('static', filename='images/' + players[0]['name'] + '.jpg') }}" 
+             alt="{{ players[0]['name'] }}" class="player-photo">
+        <h2>{{ players[0]['name'] }}</h2>
+        <p><strong>Jersey Number:</strong> {{ players[0]['jersey_number'] }}</p>
+        <p><strong>Career Matches:</strong> {{ players[0]['career_matches'] }}</p>
+        <p><strong>ICC Ranking:</strong> {{ players[0]['icc_ranking'] }}</p>
+        <p><strong>Age:</strong> {{ players[0]['age'] }}</p>
+    </section>
+    {% else %}
+    <!-- Display all players as a table -->
+    <section class="player-stats">
+        <table>
+            <thead>
+                <tr>
+                    <th>Jersey Number</th>
+                    <th>Name</th>
+                    <th>Career Matches</th>
+                    <th>ICC Ranking</th>
+                    <th>Age</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for player in players %}
+                <tr>
+                    <td>{{ player.jersey_number }}</td>
+                    <td>{{ player.name }}</td>
+                    <td>{{ player.career_matches }}</td>
+                    <td>{{ player.icc_ranking }}</td>
+                    <td>{{ player.age }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    {% endif %}
+
+    <footer>
+        <p>&copy; 2023 Cricket Stats Website</p>
+    </footer>
+
+    <script>
+        document.getElementById('search-bar').addEventListener('input', async function () {
+            const query = this.value.trim();
+            if (query) {
+                try {
+                    const response = await fetch(`/player-suggestions?q=${query}`);
+                    const data = await response.json();
+                    const suggestionsList = document.getElementById('suggestions');
+                    suggestionsList.innerHTML = '';
+                    data.suggestions.forEach(name => {
+                        const option = document.createElement('option');
+                        option.value = name;
+                        suggestionsList.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error('Error fetching suggestions:', error);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
